@@ -1,0 +1,30 @@
+version: "3.9"
+
+volumes:
+  lnd-data:
+    external: false
+  lnd-password:
+    external: false
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.25.0.0/24
+
+services:
+  app:
+    container_name: lnd
+    environment:
+      - PATH=$PATH:/root/go/bin
+    build: .
+    ports:
+      - "10009:10009"
+    networks:
+      default:
+        ipv4_address: 172.25.0.9
+    volumes:
+      - lnd-data:/root/.lnd:consistent
+      - lnd-password:/tmp
+      # - ./persist:/tmp
+      
